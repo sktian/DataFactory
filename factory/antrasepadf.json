@@ -1,0 +1,9 @@
+{
+	"name": "antrasepadf",
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6ee71131-70ae-4320-9d1e-d3dae0eb1f6c",
+		"tenantId": "2cdd98c0-0bee-43e0-938a-f3da2facaab6"
+	}
+}
