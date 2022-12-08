@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -15,197 +15,26 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "SqlServerSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "SqlServerSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate"
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "OrderLineID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "OrderLineID",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"Orders": {
+								"SchemaName": "Sales",
+								"TableName": "OrderLines"
 							},
-							{
-								"source": {
-									"name": "OrderID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "OrderID",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "StockItemID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "StockItemID",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "Description",
-									"type": "String",
-									"physicalType": "nvarchar"
-								},
-								"sink": {
-									"name": "Description",
-									"type": "String",
-									"physicalType": "String"
-								}
-							},
-							{
-								"source": {
-									"name": "PackageTypeID",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "PackageTypeID",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "Quantity",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "Quantity",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "UnitPrice",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 18
-								},
-								"sink": {
-									"name": "UnitPrice",
-									"type": "Decimal",
-									"physicalType": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "TaxRate",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 3,
-									"precision": 18
-								},
-								"sink": {
-									"name": "TaxRate",
-									"type": "Decimal",
-									"physicalType": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"name": "PickedQuantity",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "PickedQuantity",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "PickingCompletedWhen",
-									"type": "DateTime",
-									"physicalType": "datetime2"
-								},
-								"sink": {
-									"name": "PickingCompletedWhen",
-									"type": "DateTime",
-									"physicalType": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"name": "LastEditedBy",
-									"type": "Int32",
-									"physicalType": "int"
-								},
-								"sink": {
-									"name": "LastEditedBy",
-									"type": "Int32",
-									"physicalType": "Int32"
-								}
-							},
-							{
-								"source": {
-									"name": "LastEditedWhen",
-									"type": "DateTime",
-									"physicalType": "datetime2"
-								},
-								"sink": {
-									"name": "LastEditedWhen",
-									"type": "DateTime",
-									"physicalType": "DateTime"
-								}
+							"OrderLines": {
+								"SchemaName": "Sales",
+								"TableName": "Orders"
 							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": false,
-							"treatBooleanAsNumber": false
 						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "WWI_ODS",
-						"type": "DatasetReference",
-						"parameters": {
-							"SchemaName": "Sales",
-							"TableName": "OrderLines"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "WWI_DW",
-						"type": "DatasetReference",
-						"parameters": {
-							"SchemaName": "Fact",
-							"TableName": "Sale"
-						}
-					}
-				]
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": []
