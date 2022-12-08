@@ -3,18 +3,12 @@
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"description": "WideWorldImporters OLTP",
-		"parameters": {
-			"Filename": {
-				"type": "string",
-				"defaultValue": "Sales.Orders"
-			}
-		},
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
 			"connectionString": "integrated security=True;data source=ZEPHY;initial catalog=WideWorldImporters",
 			"userName": "ZEPHY\\Kevin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3N2Q1NWYzZC04YjFmLTQ2M2ItYjU0ZC1hMTE3YTJiYjNmOTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMDFiNDYwOC04OGEwLTRmMWEtYWVlZC0wMGVlMDdmMGFmMmMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "integrationRuntime1",
