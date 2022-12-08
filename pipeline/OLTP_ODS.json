@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Copy Sales Table",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -96,7 +96,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1_copy1",
+							"name": "Copy Application Table",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -181,7 +181,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy data1_copy1_copy1",
+							"name": "Copy Warehouse Table",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
