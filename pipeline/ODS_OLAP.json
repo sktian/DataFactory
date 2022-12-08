@@ -26,6 +26,10 @@
 							"OrderLines": {
 								"SchemaName": "Sales",
 								"TableName": "Orders"
+							},
+							"Customers": {
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
 							}
 						}
 					},
