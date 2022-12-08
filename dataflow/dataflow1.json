@@ -9,14 +9,17 @@
 						"referenceName": "WWI_ODS",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "Orders"
 				},
 				{
 					"dataset": {
 						"referenceName": "WWI_ODS",
 						"type": "DatasetReference"
 					},
-					"name": "source2"
+					"name": "OrderLines"
+				},
+				{
+					"name": "source1"
 				}
 			],
 			"sinks": [],
@@ -29,12 +32,14 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1",
+				"     format: 'table') ~> Orders",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source2",
-				"source1, source2 join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     format: 'table') ~> OrderLines",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source1",
+				"Orders, OrderLines join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
