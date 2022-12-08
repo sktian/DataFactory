@@ -1,18 +1,18 @@
 {
-	"name": "WWI",
+	"name": "WWI_ODS",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "WWI",
+			"referenceName": "WWI_ODS",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"TableName": {
-				"type": "string",
-				"defaultValue": "TableName"
-			},
 			"SchemaName": {
 				"type": "string",
 				"defaultValue": "SchemaName"
+			},
+			"TableName": {
+				"type": "string",
+				"defaultValue": "TableName"
 			}
 		},
 		"annotations": [],
