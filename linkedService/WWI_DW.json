@@ -5,9 +5,9 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "integrated security=True;data source=ZEPHY;initial catalog=WideWorldImportersDW",
+			"connectionString": "integrated security=True;data source=ZEPHY;initial catalog=WideWorldImportersDW2",
 			"userName": "ZEPHY\\Kevin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkYTNjMzE4Ni1kMGUzLTQ3YjUtODdmMi1iMGRlYWM5ZTZmNGMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ODg0MzFmNC1hODNkLTQ5MzEtYWI1MC1mOTE0M2Q3NjdjZTAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "integrationRuntime1",
