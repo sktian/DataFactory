@@ -20,16 +20,28 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"Orders": {
-								"SchemaName": "Sales",
-								"TableName": "OrderLines"
+								"FileName": "Sales.Orders.txt"
 							},
 							"OrderLines": {
-								"SchemaName": "Sales",
-								"TableName": "Orders"
+								"FileName": "Sales.Orderlines.txt"
 							},
 							"Customers": {
-								"SchemaName": "SchemaName",
-								"TableName": "TableName"
+								"FileName": "Sales.Customers.txt"
+							},
+							"Invoices": {
+								"FileName": "Sales.Invoices.txt"
+							},
+							"People": {
+								"FileName": "Application.People.txt"
+							},
+							"PackageTYPE": {
+								"FileName": "Warehouse.PackageTypes.txt"
+							},
+							"StockItems": {
+								"FileName": "Warehouse.StockItems.txt"
+							},
+							"ExporttoDW": {
+								"FileName": "Fact.Orders.txt"
 							}
 						}
 					},

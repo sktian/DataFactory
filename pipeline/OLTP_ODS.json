@@ -32,10 +32,15 @@
 									"partitionOption": "None"
 								},
 								"sink": {
-									"type": "SqlServerSink",
-									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false,
-									"tableOption": "autoCreate"
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
 								},
 								"enableStaging": false,
 								"translator": {
@@ -65,14 +70,10 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "WWI_ODS",
+									"referenceName": "ODS",
 									"type": "DatasetReference",
 									"parameters": {
-										"SchemaName": "@first(split(item(), '.'))",
-										"TableName": {
-											"value": "@last(split(item(), '.'))",
-											"type": "Expression"
-										}
+										"FileName": "Application.People.txt"
 									}
 								}
 							]
