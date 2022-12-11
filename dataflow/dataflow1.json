@@ -66,7 +66,7 @@
 			],
 			"transformations": [
 				{
-					"name": "join1"
+					"name": "joinOrdersOrderlines"
 				},
 				{
 					"name": "JoinwithCustomersTable"
@@ -107,11 +107,11 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> StockItems",
 				"Orders, OrderLines join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
-				"     joinType:'inner',",
+				"     joinType:'right',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1",
-				"join1, Customers join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     broadcast: 'auto')~> joinOrdersOrderlines",
+				"joinOrdersOrderlines, Customers join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
