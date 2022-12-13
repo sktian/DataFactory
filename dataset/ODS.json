@@ -7,8 +7,7 @@
 		},
 		"parameters": {
 			"FileName": {
-				"type": "String",
-				"defaultValue": "Application.People.txt"
+				"type": "String"
 			}
 		},
 		"annotations": [],

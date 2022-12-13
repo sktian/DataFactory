@@ -73,7 +73,10 @@
 									"referenceName": "ODS",
 									"type": "DatasetReference",
 									"parameters": {
-										"FileName": "Application.People.txt"
+										"FileName": {
+											"value": "@item()",
+											"type": "Expression"
+										}
 									}
 								}
 							]
