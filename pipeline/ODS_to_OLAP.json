@@ -1,5 +1,5 @@
 {
-	"name": "ODS_OLAP",
+	"name": "ODS_to_OLAP",
 	"properties": {
 		"activities": [
 			{

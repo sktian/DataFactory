@@ -1,0 +1,32 @@
+{
+	"name": "WWIDW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "WWIDW",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SchemaName": {
+				"type": "string",
+				"defaultValue": "SchemaName"
+			},
+			"TableName": {
+				"type": "string",
+				"defaultValue": "TableName"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().SchemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}

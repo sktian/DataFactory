@@ -5,62 +5,30 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "Orders",
 					"description": "Import data from ODS"
 				},
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "OrderLines"
 				},
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "Customers"
 				},
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "Invoices"
 				},
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "People"
 				},
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "PackageTYPE"
 				},
 				{
-					"dataset": {
-						"referenceName": "ODS",
-						"type": "DatasetReference"
-					},
 					"name": "StockItems"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "DW",
-						"type": "DatasetReference"
-					},
 					"name": "ExporttoDW"
 				}
 			],
@@ -87,29 +55,22 @@
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['Sales.Orderlines.txt']) ~> Orders",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     inferDriftedColumnTypes: true,",
 				"     limit: 100,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['Sales.Orders.txt']) ~> OrderLines",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Customers",
+				"     validateSchema: false) ~> Customers",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> Invoices",
+				"     validateSchema: false) ~> Invoices",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> People",
+				"     validateSchema: false) ~> People",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> PackageTYPE",
+				"     validateSchema: false) ~> PackageTYPE",
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> StockItems",
+				"     validateSchema: false) ~> StockItems",
 				"Orders, OrderLines join(fuzzyCompare(ERROR_FUNCTION(''), ERROR_FUNCTION(''), 71.00),",
 				"     joinType:'left',",
 				"     matchType:'fuzzy',",
@@ -142,11 +103,10 @@
 				"     broadcast: 'auto')~> joinwithstock",
 				"joinwithstock sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     format: 'table') ~> ExporttoDW"
 			]
 		}
