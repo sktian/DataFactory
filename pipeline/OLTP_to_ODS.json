@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "SELECT waterMarkVal\nFROM [dbo].[WaterMark]\nWHERE tableName = 'Sales.Orders'",
+						"sqlReaderQuery": "SELECT waterMarkVal AS WMVO\nFROM [dbo].[WaterMark]\nWHERE tableName = 'Sales.Orders'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -46,22 +46,22 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "SELECT MAX(LastEditedWhen)\nFROM Sales.Orders;",
+						"sqlReaderQuery": "SELECT MAX(LastEditedWhen) AS WMVN\nFROM Sales.Orders;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "WWIODS",
+						"referenceName": "WWI",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "Sales",
-							"TableName": "Orders"
+							"TableName": "Orders",
+							"SchemaName": "Sales"
 						}
 					}
 				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "CopyOrders",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -89,7 +89,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "SELECT *\nFROM Sales.Orders\nWHERE LastEditedWhen >= @{activity('LookupOldWaterMark').output.firstRow.waterMarkVal}\nAND LastEditedWhen <= @{activity('LookupNewWaterMark').output.firstRow.waterMarkVal};",
+							"value": "select * \nfrom Sales.Orders\nwhere LastEditedWhen > \n'@{activity('LookupOldWaterMark').output.firstRow.WMVO}' \nand LastEditedWhen <= \n'@{activity('LookupNewWaterMark').output.firstRow.WMVN}'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -113,17 +113,17 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "WWIODS",
+						"referenceName": "WWI",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "Sales",
-							"TableName": "Orders"
+							"TableName": "Orders",
+							"SchemaName": "Sales"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "WWIDW",
+						"referenceName": "WWIODS",
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "Sales",
@@ -137,7 +137,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "CopyOrders",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -156,7 +156,7 @@
 					"storedProcedureParameters": {
 						"LastModifiedtime": {
 							"value": {
-								"value": "@activity('LookupNewWaterMark').output.firstRow.waterMarkVal",
+								"value": "@activity('LookupNewWaterMark').output.firstRow.WMVN",
 								"type": "Expression"
 							},
 							"type": "DateTime"

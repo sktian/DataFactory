@@ -19,12 +19,6 @@
 						"referenceName": "dataflow1",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"Orders": {
-								"FileName": "Sales.Orders.txt"
-							},
-							"OrderLines": {
-								"FileName": "Sales.Orderlines.txt"
-							},
 							"Customers": {
 								"FileName": "Sales.Customers.txt"
 							},

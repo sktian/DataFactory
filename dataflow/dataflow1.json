@@ -5,10 +5,18 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "WWIODS",
+						"type": "DatasetReference"
+					},
 					"name": "Orders",
 					"description": "Import data from ODS"
 				},
 				{
+					"dataset": {
+						"referenceName": "WWIODS",
+						"type": "DatasetReference"
+					},
 					"name": "OrderLines"
 				},
 				{
@@ -53,13 +61,38 @@
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          OrderID as integer,",
+				"          CustomerID as integer,",
+				"          SalespersonPersonID as integer,",
+				"          PickedByPersonID as integer,",
+				"          ContactPersonID as integer,",
+				"          BackorderOrderID as integer,",
+				"          OrderDate as date,",
+				"          ExpectedDeliveryDate as date,",
+				"          CustomerPurchaseOrderNumber as string,",
+				"          IsUndersupplyBackordered as boolean,",
+				"          Comments as string,",
+				"          DeliveryInstructions as string,",
+				"          InternalComments as string,",
+				"          PickingCompletedWhen as timestamp,",
+				"          LastEditedBy as integer,",
+				"          LastEditedWhen as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     limit: 100,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT *\\nFROM Sales.Orders',",
+				"     format: 'query',",
 				"     wildcardPaths:['Sales.Orderlines.txt']) ~> Orders",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     inferDriftedColumnTypes: true,",
 				"     limit: 100,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT *\\nFROM Sales.OrderLines',",
+				"     format: 'query',",
 				"     wildcardPaths:['Sales.Orders.txt']) ~> OrderLines",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false) ~> Customers",
@@ -72,7 +105,7 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false) ~> StockItems",
 				"Orders, OrderLines join(fuzzyCompare(ERROR_FUNCTION(''), ERROR_FUNCTION(''), 71.00),",
-				"     joinType:'left',",
+				"     joinType:'inner',",
 				"     matchType:'fuzzy',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> joinOrdersOrderlines",
