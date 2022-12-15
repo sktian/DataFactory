@@ -1,5 +1,5 @@
 {
-	"name": "dataflow2",
+	"name": "ODS_to_DW_DF",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

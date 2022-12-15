@@ -1,5 +1,5 @@
 {
-	"name": "ODS_to_OLAP",
+	"name": "ODS_to_DW",
 	"properties": {
 		"activities": [
 			{
@@ -16,26 +16,40 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "ODS_to_DW_DF",
 						"type": "DataFlowReference",
 						"datasetParameters": {
+							"Orders": {
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
+							},
+							"OrderLines": {
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
+							},
 							"Customers": {
-								"FileName": "Sales.Customers.txt"
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
 							},
 							"Invoices": {
-								"FileName": "Sales.Invoices.txt"
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
 							},
 							"People": {
-								"FileName": "Application.People.txt"
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
 							},
-							"PackageTYPE": {
-								"FileName": "Warehouse.PackageTypes.txt"
+							"PackageTypes": {
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
 							},
 							"StockItems": {
-								"FileName": "Warehouse.StockItems.txt"
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
 							},
-							"ExporttoDW": {
-								"FileName": "Fact.Orders.txt"
+							"ToDW": {
+								"SchemaName": "Fact",
+								"TableName": "Orders"
 							}
 						}
 					},

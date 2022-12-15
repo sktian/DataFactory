@@ -29,7 +29,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "ODS_to_OLAP",
+						"referenceName": "ODS_to_DW",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
