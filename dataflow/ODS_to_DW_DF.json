@@ -53,6 +53,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "StockItems"
+				},
+				{
+					"dataset": {
+						"referenceName": "WWIDW",
+						"type": "DatasetReference"
+					},
+					"name": "LoadDestinationTable"
 				}
 			],
 			"sinks": [
@@ -62,6 +69,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "ToDW"
+				},
+				{
+					"dataset": {
+						"referenceName": "WWIDW",
+						"type": "DatasetReference"
+					},
+					"name": "UpdateisActive"
 				}
 			],
 			"transformations": [
@@ -82,6 +96,30 @@
 				},
 				{
 					"name": "join6"
+				},
+				{
+					"name": "SelectColumns"
+				},
+				{
+					"name": "AddingIsActive"
+				},
+				{
+					"name": "FromSqlTable"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "ExistingRowsInSourceAndSink"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "alterRow1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -271,6 +309,27 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     query: 'SELECT *\\nFROM Warehouse.StockItems',",
 				"     format: 'query') ~> StockItems",
+				"source(output(",
+				"          SurrogateKey as integer,",
+				"          {Order Key} as integer,",
+				"          {City Key} as integer,",
+				"          {Customer Key} as integer,",
+				"          {Stock Item Key} as integer,",
+				"          {Order Date} as date,",
+				"          {Picking Date} as binary,",
+				"          {Sales Person Key} as integer,",
+				"          {Picker Key} as integer,",
+				"          Description as string,",
+				"          Quantity as integer,",
+				"          {Unit Price} as decimal(18,0),",
+				"          {Tax Rate} as decimal(18,0),",
+				"          isActive as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT *\\nFROM Fact.Orders',",
+				"     format: 'query') ~> LoadDestinationTable",
 				"Orders, OrderLines join(Orders@OrderID == OrderLines@OrderID,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -301,7 +360,66 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> join6",
-				"join6 sink(allowSchemaDrift: true,",
+				"join6 select(mapColumn(",
+				"          {Order Key} = Orders@OrderID,",
+				"          {City Key} = DeliveryCityID,",
+				"          {Customer Key} = Orders@CustomerID,",
+				"          {Stock Item Key} = OrderLines@StockItemID,",
+				"          {Order Date} = OrderDate,",
+				"          {Picking Date} = Orders@PickingCompletedWhen,",
+				"          {Sales Person Key} = Orders@SalespersonPersonID,",
+				"          {Picker Key} = PickedByPersonID,",
+				"          Description,",
+				"          Quantity,",
+				"          {Unit Price} = StockItems@UnitPrice,",
+				"          {Tax Rate} = StockItems@TaxRate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectColumns",
+				"SelectColumns derive(isActive = 1) ~> AddingIsActive",
+				"LoadDestinationTable select(mapColumn(",
+				"          SQLSurrogateKey = SurrogateKey,",
+				"          {SQLOrder Key} = {Order Key},",
+				"          {SQLCity Key} = {City Key},",
+				"          {SQLCustomer Key} = {Customer Key},",
+				"          {SQLStock Item Key} = {Stock Item Key},",
+				"          {SQLOrder Date} = {Order Date},",
+				"          {SQLPicking Date} = {Picking Date},",
+				"          {SQLSales Person Key} = {Sales Person Key},",
+				"          {SQLPicker Key} = {Picker Key},",
+				"          SQLDescription = Description,",
+				"          SQLQuantity = Quantity,",
+				"          {SQLUnit Price} = {Unit Price},",
+				"          {SQLTax Rate} = {Tax Rate},",
+				"          SQLisActive = isActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FromSqlTable",
+				"Orders, FromSqlTable lookup(OrderID == {SQLOrder Key},",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 filter(!isNull({SQLOrder Key})) ~> ExistingRowsInSourceAndSink",
+				"ExistingRowsInSourceAndSink select(mapColumn(",
+				"          SQLSurrogateKey,",
+				"          {SQLOrder Key},",
+				"          {SQLCity Key},",
+				"          {SQLCustomer Key},",
+				"          {SQLStock Item Key},",
+				"          {SQLOrder Date},",
+				"          {SQLPicking Date},",
+				"          {SQLSales Person Key},",
+				"          {SQLPicker Key},",
+				"          SQLDescription,",
+				"          SQLQuantity,",
+				"          {SQLUnit Price},",
+				"          {SQLTax Rate},",
+				"          SQLisActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"derivedColumn1 alterRow(updateIf(1 == 1)) ~> alterRow1",
+				"select1 derive(SQLisActive = 0) ~> derivedColumn1",
+				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -309,7 +427,47 @@
 				"     upsertable:false,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> ToDW"
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          {Order Key},",
+				"          {City Key},",
+				"          {Customer Key},",
+				"          {Stock Item Key},",
+				"          {Order Date},",
+				"          {Picking Date},",
+				"          {Sales Person Key},",
+				"          {Picker Key},",
+				"          Description,",
+				"          Quantity,",
+				"          {Unit Price},",
+				"          {Tax Rate}",
+				"     )) ~> ToDW",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['SurrogateKey'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          SurrogateKey = SQLSurrogateKey,",
+				"          {Order Key} = {SQLOrder Key},",
+				"          {City Key} = {SQLCity Key},",
+				"          {Customer Key} = {SQLCustomer Key},",
+				"          {Stock Item Key} = {SQLStock Item Key},",
+				"          {Order Date} = {SQLOrder Date},",
+				"          {Picking Date} = {SQLPicking Date},",
+				"          {Sales Person Key} = {SQLSales Person Key},",
+				"          {Picker Key} = {SQLPicker Key},",
+				"          Description = SQLDescription,",
+				"          Quantity = SQLQuantity,",
+				"          {Unit Price} = {SQLUnit Price},",
+				"          {Tax Rate} = {SQLTax Rate},",
+				"          isActive = SQLisActive",
+				"     )) ~> UpdateisActive"
 			]
 		}
 	}
