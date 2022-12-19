@@ -47,7 +47,15 @@
 								"SchemaName": "SchemaName",
 								"TableName": "TableName"
 							},
+							"LoadDestinationTable": {
+								"SchemaName": "SchemaName",
+								"TableName": "TableName"
+							},
 							"ToDW": {
+								"SchemaName": "Fact",
+								"TableName": "Orders"
+							},
+							"UpdateisActive": {
 								"SchemaName": "Fact",
 								"TableName": "Orders"
 							}
